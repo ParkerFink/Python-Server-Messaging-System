@@ -26,6 +26,7 @@ messageList = []
 
 def recvMessage():
     msgPayload_in = socket.recv(1024).decode()
+    print(msgPayload_in)
     messages.config(text=msgPayload_in)
     
 

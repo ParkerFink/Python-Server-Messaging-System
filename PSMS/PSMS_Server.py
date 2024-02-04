@@ -42,7 +42,7 @@ while True:
     connection.send("Connection Created!".encode())
     recvThread = threading.Thread(target=onNewClient, args=(connection, address))
     recvThread.start()
-recvThread.join()
+#recvThread.join()
 
 
 
