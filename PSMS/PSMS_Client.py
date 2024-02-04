@@ -17,4 +17,4 @@ def sendMsg():
 sendMsg()
 
 
-socket.close()
+#socket.close()

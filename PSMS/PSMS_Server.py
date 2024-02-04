@@ -12,9 +12,10 @@ server.listen(10)
 
 
 connectionList = [] 
+messages = []
 
 
-
+    
 
 while True:
     connection, address = server.accept()
@@ -22,8 +23,11 @@ while True:
     connectionList.append(address)
     print(connectionList)
 
-    while connection:
-        print(connection.recv(1024).decode())
+    #messages.append(connection.recv(1024).decode())
+    #print(messages)
+    
+
+    
         
         
     
