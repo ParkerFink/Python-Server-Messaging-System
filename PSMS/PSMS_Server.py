@@ -1,11 +1,14 @@
 import socket
 import json
+import threading
+
 
 
 with open('config.json', 'r') as inFile:
     global data
     data = json.load(inFile)
     print(data)
+    inFile.close()
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket Created: ")
@@ -18,20 +21,34 @@ server.listen(10)
 
 
 
-connectionList = [] 
-messages = []
 
 
-    
+
+def onNewClient(client_socket, addr):
+    while True:
+        data = client_socket.recv(1024).decode()
+        if not data:
+            break
+        print({addr} ,": ", data)
+    client_socket.close()
+
+
+
+
 
 while True:
     connection, address = server.accept()
     connection.send("Connection Created!".encode())
-    connectionList.append(address)
-    print(connectionList)
+    recvThread = threading.Thread(target=onNewClient, args=(connection, address))
+    recvThread.start()
+recvThread.join()
 
-    #messages.append(connection.recv(1024).decode())
-    #print(messages)
+
+
+    
+
+
+    
     
 
     
