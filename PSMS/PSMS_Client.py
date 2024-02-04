@@ -1,9 +1,18 @@
 import socket
+import json
+
+
+with open('config.json', 'r') as inFile:
+    global data
+    data = json.load(inFile)
+    print(data)
+
 
 #config 
 socket = socket.socket()
-port = 12345
-socket.connect(('127.0.0.1', port))
+port = data["port"]
+ip = data["ip"]
+socket.connect((ip, port))
 print(socket.recv(1024).decode())
 
 

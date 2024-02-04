@@ -1,11 +1,18 @@
 import socket
+import json
 
 
+with open('config.json', 'r') as inFile:
+    global data
+    data = json.load(inFile)
+    print(data)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket Created: ")
-port = 12345
-server.bind(('127.0.0.1', port))
+
+port = data["port"]
+ip = data["ip"]
+server.bind((ip, port))
 server.listen(10)
 
 
