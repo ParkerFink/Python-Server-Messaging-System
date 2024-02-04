@@ -1,0 +1,4 @@
+v0.1
+-User has a graphical interface to be able to send messages but displaying them does not work
+-The server is able to see all send messages
+
