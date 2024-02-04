@@ -2,6 +2,7 @@ import socket
 import json
 import threading
 
+print(threading.active_count())
 
 
 with open('config.json', 'r') as inFile:
@@ -23,13 +24,13 @@ server.listen(10)
 
 
 
-
 def onNewClient(client_socket, addr):
     while True:
         data = client_socket.recv(1024).decode()
         if not data:
             break
-        print({addr} ,": ", data)
+        print(data)
+        connection.send(data.encode())
     client_socket.close()
 
 
