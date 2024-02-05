@@ -64,7 +64,7 @@ def sendMsg():
 
 
 
-entry = tkinter.Entry()
+entry = tkinter.Entry(width=50)
 entry.pack()
 
 submit = tkinter.Button(text="Send", command=sendMsg)
