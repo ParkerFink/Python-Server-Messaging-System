@@ -24,6 +24,7 @@ messageList = []
 
 
 
+
 #reciving messages
 def recvMessage():
     while True:
@@ -32,13 +33,13 @@ def recvMessage():
             pass
 
         else:
-            
-            window.winfo_exists()
-
+            for message in messageList:
+                messageList.clear()
             messageList.append(msgPayload_in)
             print(messageList)
+            
             for message in messageList:
-                tkinter.Label(text= message).pack()
+                tmp = tkinter.Label(window, text=message).pack()
 
 
 
@@ -68,6 +69,7 @@ entry.pack()
 
 submit = tkinter.Button(text="Send", command=sendMsg)
 submit.pack()
+
 
 
 
