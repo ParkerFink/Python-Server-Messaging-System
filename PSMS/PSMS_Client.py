@@ -24,14 +24,27 @@ messageList = []
 
 
 
+#reciving messages
 def recvMessage():
-    msgPayload_in = socket.recv(1024).decode()
-    print(msgPayload_in)
-    messages.config(text=msgPayload_in)
-    
+    while True:
+        msgPayload_in = socket.recv(1024).decode()
+        if msgPayload_in == False:
+            pass
 
-recvThread = threading.Thread(target=recvMessage, name='recvThread')
+        else:
+            
+            window.winfo_exists()
 
+            messageList.append(msgPayload_in)
+            print(messageList)
+            for message in messageList:
+                tkinter.Label(text= message).pack()
+
+
+
+
+recvThread = threading.Thread(target=recvMessage, name="recvThread")
+recvThread.start()
 
 
 
@@ -40,18 +53,13 @@ recvThread = threading.Thread(target=recvMessage, name='recvThread')
 window = tkinter.Tk()
 window.title("PSMS")
 window.geometry('800x500')
-recvThread.start()
 
 
 def sendMsg():
-    msgPayload = entry.get()
-    print(msgPayload)
+    msgPayload = str(entry.get())
+    print("Sent: " + msgPayload)
     socket.send(msgPayload.encode())
     entry.delete(0, 10000)
-
-
-
-
 
 
 
@@ -62,8 +70,7 @@ submit = tkinter.Button(text="Send", command=sendMsg)
 submit.pack()
 
 
-messages = tkinter.Label(text = messageList)
-messages.pack()
+
 
 sendHotkey = keyboard.add_hotkey('enter', lambda: sendMsg())
 

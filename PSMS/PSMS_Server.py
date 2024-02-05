@@ -2,7 +2,7 @@ import socket
 import json
 import threading
 
-print(threading.active_count())
+
 
 
 with open('config.json', 'r') as inFile:
@@ -21,7 +21,7 @@ server.listen(10)
 
 
 
-
+connections = []
 
 
 def onNewClient(client_socket, addr):
@@ -29,8 +29,10 @@ def onNewClient(client_socket, addr):
         data = client_socket.recv(1024).decode()
         if not data:
             break
-        print(data)
-        connection.send(data.encode())
+        for user in connections:
+            user.send(data.encode())
+        print("Server: ", data)
+        
     client_socket.close()
 
 
@@ -40,9 +42,11 @@ def onNewClient(client_socket, addr):
 while True:
     connection, address = server.accept()
     connection.send("Connection Created!".encode())
+    connections.append(connection)
     recvThread = threading.Thread(target=onNewClient, args=(connection, address))
     recvThread.start()
-#recvThread.join()
+    
+
 
 
 
