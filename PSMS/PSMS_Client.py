@@ -51,35 +51,85 @@ recvThread.start()
 
 
 #GUI
-window = tkinter.Tk()
-window.title("PSMS")
-window.geometry('800x500')
+def mainWindow(width, height):
+    global window
+    window = tkinter.Tk()
+    window.title("PSMS")
+    window.geometry(width + "x" + height)
 
-
-def sendMsg():
-    msgPayload = str(entry.get())
-    print("Sent: " + msgPayload)
-    socket.send(msgPayload.encode())
-    entry.delete(0, 10000)
+    settingsTab = tkinter.Button(text="Settings", command=lambda: settingsWindow("800","500")).pack()
 
 
 
-entry = tkinter.Entry(width=50)
-entry.pack()
-
-submit = tkinter.Button(text="Send", command=sendMsg)
-submit.pack()
-
-
+    def sendMsg():
+        msgPayload = str(entry.get())
+        print("Sent: " + msgPayload)
+        socket.send(msgPayload.encode())
+        entry.delete(0, 10000)
 
 
 
-sendHotkey = keyboard.add_hotkey('enter', lambda: sendMsg())
+    entry = tkinter.Entry(width=50)
+    entry.pack()
+
+    submit = tkinter.Button(text="Send", command=sendMsg)
+    submit.pack()
+    keyboard.add_hotkey('enter', lambda: sendMsg())
+
+    window.mainloop()
 
 
-window.mainloop()
 
 
+
+
+
+
+def settingsWindow(width, height):
+    global settings
+    settings = tkinter.Tk()
+    settings.title("Settings")
+    settings.geometry(width + "x" + height)
+
+    def getEntry():
+        entryGet = entry.get()
+        with open('config.json', 'r') as configFile:
+            data = json.load(configFile)
+        data["username"] = entryGet
+
+        with open('config.json', 'w') as configFile:
+            json.dump(data, configFile)
+        
+        l2.config(text=entryGet)
+        entry.delete(0, 10000)
+
+
+
+    with open('config.json', 'r') as configFile:
+        data = json.load(configFile)
+        
+
+
+    l1 = tkinter.Label(settings, text="User Name: ")
+    l1.pack()
+
+    l2 = tkinter.Label(settings, text= data["username"])
+    l2.pack()
+
+    entry = tkinter.Entry(settings)
+    entry.pack()
+
+    keyboard.add_hotkey('enter', lambda: getEntry())
+
+
+    settings.mainloop()
+
+
+
+
+
+
+mainWindow("800", "500")
 
 
 
