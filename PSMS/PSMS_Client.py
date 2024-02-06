@@ -52,19 +52,24 @@ recvThread.start()
 
 #GUI
 def mainWindow(width, height):
+    with open('config.json', 'r') as configFile:
+        data = json.load(configFile)
+
     global window
     window = tkinter.Tk()
     window.title("PSMS")
     window.geometry(width + "x" + height)
 
-    settingsTab = tkinter.Button(text="Settings", command=lambda: settingsWindow("800","500")).pack()
+    settingsTab = tkinter.Button(text="Settings", command=lambda: settingsWindow("800","500"))
+    settingsTab.pack()
 
 
 
     def sendMsg():
         msgPayload = str(entry.get())
         print("Sent: " + msgPayload)
-        socket.send(msgPayload.encode())
+        msg = data["username"] + ": " + msgPayload
+        socket.send(msg.encode())
         entry.delete(0, 10000)
 
 
