@@ -2,3 +2,10 @@ v0.1
 -User has a graphical interface to be able to send messages but displaying them does not work
 -The server is able to see all send messages
 
+v0.2?
+Not sure where the info went
+
+v0.3
+-Created setup/start files for Windows and Linux
+-Recieved messages now displays who sent them
+
