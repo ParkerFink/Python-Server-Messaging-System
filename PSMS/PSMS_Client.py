@@ -52,6 +52,7 @@ recvThread.start()
 
 
 #GUI
+#MAIN WINDOW
 def mainWindow(width, height):
 
     def closeWindow():
@@ -61,6 +62,7 @@ def mainWindow(width, height):
     def sendMsg():
         with open('config.json', 'r') as configFile:
             username = json.load(configFile)
+            configFile.close()
 
         msgPayload = str(entry.get())
         print("Sent: " + msgPayload)
@@ -70,6 +72,7 @@ def mainWindow(width, height):
 
     with open('config.json', 'r') as configFile:
         data = json.load(configFile)
+        configFile.close()
 
 
 
@@ -94,6 +97,7 @@ def mainWindow(width, height):
 
     submit = tkinter.Button(text="Send", command=sendMsg)
     submit.pack()
+
     keyboard.add_hotkey('enter', lambda: sendMsg())
 
 
@@ -106,7 +110,7 @@ def mainWindow(width, height):
 
 
 
-
+#SETTINGS WINDOW
 def settingsWindow(width, height):
 
     
@@ -128,15 +132,19 @@ def settingsWindow(width, height):
 
 
     def getEntry():
+
         entryGet = entry.get()
+
         with open('config.json', 'r') as configFile:
             data = json.load(configFile)
+            configFile.close()
 
         data["username"] = entryGet
 
         with open('config.json', 'w') as configFile:
             json.dump(data, configFile)
-        
+            configFile.close()
+
         l2.config(text=entryGet)
         entry.delete(0, 10000)
 
@@ -144,7 +152,7 @@ def settingsWindow(width, height):
 
     with open('config.json', 'r') as configFile:
         data = json.load(configFile)
-        
+        configFile.close()
 
 
     l1 = tkinter.Label(settings, text="User Name: ")
@@ -156,8 +164,10 @@ def settingsWindow(width, height):
     entry = tkinter.Entry(settings)
     entry.pack()
 
-    keyboard.add_hotkey('enter', lambda: getEntry())
 
+
+    newName = tkinter.Button(settings, text="Enter New Name!", command= getEntry)
+    newName.pack()
 
     settings.mainloop()
 
