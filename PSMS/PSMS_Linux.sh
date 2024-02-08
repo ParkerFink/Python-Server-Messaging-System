@@ -1,1 +1,1 @@
-python3 PSMS_Client.py
+sudo python3 PSMS_Client.py
