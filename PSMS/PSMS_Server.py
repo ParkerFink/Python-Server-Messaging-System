@@ -28,12 +28,13 @@ def onNewClient(client_socket, addr):
     while True:
         data = client_socket.recv(1024).decode()
         if not data:
+            client_socket.close()
+            connections.remove(client_socket)
             break
         for user in connections:
             user.send(data.encode())
         print("Server: ", data)
         
-    client_socket.close()
 
 
 

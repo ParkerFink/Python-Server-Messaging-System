@@ -39,7 +39,8 @@ def recvMessage():
             print(messageList)
             
             for message in messageList:
-                tmp = tkinter.Label(window, text=message).pack()
+                tmp = tkinter.Label(window, text=message)
+                tmp.pack()
 
 
 
@@ -52,8 +53,25 @@ recvThread.start()
 
 #GUI
 def mainWindow(width, height):
+
+    def closeWindow():
+        window.destroy()
+        
+
+    def sendMsg():
+        with open('config.json', 'r') as configFile:
+            username = json.load(configFile)
+
+        msgPayload = str(entry.get())
+        print("Sent: " + msgPayload)
+        msg = username["username"] + ": " + msgPayload
+        socket.send(msg.encode())
+        entry.delete(0, 10000)
+
     with open('config.json', 'r') as configFile:
         data = json.load(configFile)
+
+
 
     global window
     window = tkinter.Tk()
@@ -63,23 +81,22 @@ def mainWindow(width, height):
     settingsTab = tkinter.Button(text="Settings", command=lambda: settingsWindow("800","500"))
     settingsTab.pack()
 
-
-
-    def sendMsg():
-        msgPayload = str(entry.get())
-        print("Sent: " + msgPayload)
-        msg = data["username"] + ": " + msgPayload
-        socket.send(msg.encode())
-        entry.delete(0, 10000)
+    exit = tkinter.Button(text="Exit", command=closeWindow)
+    exit.pack()
+    
 
 
 
     entry = tkinter.Entry(width=50)
     entry.pack()
 
+
+
     submit = tkinter.Button(text="Send", command=sendMsg)
     submit.pack()
     keyboard.add_hotkey('enter', lambda: sendMsg())
+
+
 
     window.mainloop()
 
@@ -91,15 +108,30 @@ def mainWindow(width, height):
 
 
 def settingsWindow(width, height):
+
+    
+    def closeWindow():
+        settings.destroy()
+
+    
+
+
     global settings
     settings = tkinter.Tk()
     settings.title("Settings")
     settings.geometry(width + "x" + height)
 
+
+
+    backButton = tkinter.Button(settings, text="Go Back", command=closeWindow)
+    backButton.pack()
+
+
     def getEntry():
         entryGet = entry.get()
         with open('config.json', 'r') as configFile:
             data = json.load(configFile)
+
         data["username"] = entryGet
 
         with open('config.json', 'w') as configFile:
