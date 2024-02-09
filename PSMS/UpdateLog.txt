@@ -9,3 +9,9 @@ v0.3
 -Created setup/start files for Windows and Linux
 -Recieved messages now displays who sent them
 
+v0.4
+-fixed username not updating bug
+-fixed server crashing bug
+-fixed linux start files
+-added a menu bar with prefferences tab and exit tab
+

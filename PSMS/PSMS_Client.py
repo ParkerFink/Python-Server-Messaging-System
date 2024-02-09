@@ -1,9 +1,9 @@
 import socket
 import json
-import tkinter
 import keyboard
 import threading
 
+from tkinter import *
 
 with open('config.json', 'r') as inFile:
     global data
@@ -12,6 +12,7 @@ with open('config.json', 'r') as inFile:
 
 
 #config 
+
 socket = socket.socket()
 port = data["port"]
 ip = data["ip"]
@@ -39,7 +40,7 @@ def recvMessage():
             print(messageList)
             
             for message in messageList:
-                tmp = tkinter.Label(window, text=message)
+                tmp = Label(window, text=message)
                 tmp.pack()
 
 
@@ -52,17 +53,15 @@ recvThread.start()
 
 
 #GUI
-#MAIN WINDOW
+#MAIN WINDOW FUNCTION
 def mainWindow(width, height):
 
-    def closeWindow():
-        window.destroy()
-        
 
     def sendMsg():
         with open('config.json', 'r') as configFile:
             username = json.load(configFile)
             configFile.close()
+
 
         msgPayload = str(entry.get())
         print("Sent: " + msgPayload)
@@ -70,38 +69,48 @@ def mainWindow(width, height):
         socket.send(msg.encode())
         entry.delete(0, 10000)
 
+
     with open('config.json', 'r') as configFile:
         data = json.load(configFile)
         configFile.close()
 
 
 
+
+
+    #MAIN WINDOW LOOP
     global window
-    window = tkinter.Tk()
+    window = Tk()
     window.title("PSMS")
     window.geometry(width + "x" + height)
 
-    settingsTab = tkinter.Button(text="Settings", command=lambda: settingsWindow("800","500"))
-    settingsTab.pack()
 
-    exit = tkinter.Button(text="Exit", command=closeWindow)
-    exit.pack()
-    
+    def closeWindow():
+        window.destroy()
+        exit()
+
+    #menuebar
+    menubar = Menu(window)
+    file = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label="General", menu=file)
+
+    file.add_command(label="Preferences", command= lambda: settingsWindow("800","500"))
+    file.add_command(label="Exit", command= lambda: closeWindow())
 
 
 
-    entry = tkinter.Entry(width=50)
+    entry = Entry(width=50)
     entry.pack()
 
 
 
-    submit = tkinter.Button(text="Send", command=sendMsg)
+    submit = Button(text="Send", command=sendMsg)
     submit.pack()
 
     keyboard.add_hotkey('enter', lambda: sendMsg())
 
 
-
+    window.config(menu = menubar)
     window.mainloop()
 
 
@@ -121,13 +130,13 @@ def settingsWindow(width, height):
 
 
     global settings
-    settings = tkinter.Tk()
+    settings = Tk()
     settings.title("Settings")
     settings.geometry(width + "x" + height)
 
 
 
-    backButton = tkinter.Button(settings, text="Go Back", command=closeWindow)
+    backButton = Button(settings, text="Go Back", command=closeWindow)
     backButton.pack()
 
 
@@ -155,18 +164,18 @@ def settingsWindow(width, height):
         configFile.close()
 
 
-    l1 = tkinter.Label(settings, text="User Name: ")
+    l1 = Label(settings, text="User Name: ")
     l1.pack()
 
-    l2 = tkinter.Label(settings, text= data["username"])
+    l2 = Label(settings, text= data["username"])
     l2.pack()
 
-    entry = tkinter.Entry(settings)
+    entry = Entry(settings)
     entry.pack()
 
 
 
-    newName = tkinter.Button(settings, text="Enter New Name!", command= getEntry)
+    newName = Button(settings, text="Enter New Name!", command= getEntry)
     newName.pack()
 
     settings.mainloop()
