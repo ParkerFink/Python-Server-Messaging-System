@@ -17,5 +17,7 @@ v0.4
 -removed setup/start files for both windows and linux
 -removed the ability for client to send an empty string
 -added a menu bar with a General button
+-added a single setup/start file for both linux and windows
+
 
 

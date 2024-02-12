@@ -67,7 +67,7 @@ def mainWindow(width, height):
 
         if msgPayload == "":
             pass
-        
+
         else:
             print("Sent: " + msgPayload)
             msg = username["username"] + ": " + msgPayload
@@ -182,6 +182,11 @@ def settingsWindow(width, height):
 
     newName = Button(settings, text="Enter New Name!", command= getEntry)
     newName.pack()
+
+    keyboard.add_hotkey('enter', lambda: getEntry())
+
+
+
 
     settings.mainloop()
 
