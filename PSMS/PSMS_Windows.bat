@@ -1,1 +1,0 @@
-pip install keyboard && python PSMS_Client.py
