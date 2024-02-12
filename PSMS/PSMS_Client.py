@@ -64,10 +64,15 @@ def mainWindow(width, height):
 
 
         msgPayload = str(entry.get())
-        print("Sent: " + msgPayload)
-        msg = username["username"] + ": " + msgPayload
-        socket.send(msg.encode())
-        entry.delete(0, 10000)
+
+        if msgPayload == "":
+            pass
+        
+        else:
+            print("Sent: " + msgPayload)
+            msg = username["username"] + ": " + msgPayload
+            socket.send(msg.encode())
+            entry.delete(0, 10000)
 
 
     with open('config.json', 'r') as configFile:
