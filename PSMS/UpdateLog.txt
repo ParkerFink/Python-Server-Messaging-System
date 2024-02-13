@@ -20,4 +20,5 @@ v0.4
 -added a single setup/start file for both linux and windows
 
 
-
+v0.5
+-changed keyboard module from Keyboard to Pynput and fixed message send bug

@@ -1,8 +1,8 @@
 import socket
 import json
-import keyboard
 import threading
 
+from pynput import keyboard
 from tkinter import *
 
 with open('config.json', 'r') as inFile:
@@ -18,6 +18,7 @@ port = data["port"]
 ip = data["ip"]
 socket.connect((ip, port))
 print(socket.recv(1024).decode())
+
 
 
 
@@ -56,28 +57,32 @@ recvThread.start()
 #MAIN WINDOW FUNCTION
 def mainWindow(width, height):
 
+    
 
-    def sendMsg():
+    def sendMsg(key):
+
+        if key == keyboard.Key.enter:
+
+            with open('config.json', 'r') as configFile:
+                username = json.load(configFile)
+                configFile.close()
+
+
+            msgPayload = str(entry.get())
+
+            if msgPayload == "":
+                pass
+
+            else:
+                print("Sent: " + msgPayload)
+                msg = username["username"] + ": " + msgPayload
+                socket.send(msg.encode())
+                entry.delete(0, 10000)
+
+
         with open('config.json', 'r') as configFile:
-            username = json.load(configFile)
+            data = json.load(configFile)
             configFile.close()
-
-
-        msgPayload = str(entry.get())
-
-        if msgPayload == "":
-            pass
-
-        else:
-            print("Sent: " + msgPayload)
-            msg = username["username"] + ": " + msgPayload
-            socket.send(msg.encode())
-            entry.delete(0, 10000)
-
-
-    with open('config.json', 'r') as configFile:
-        data = json.load(configFile)
-        configFile.close()
 
 
 
@@ -89,6 +94,7 @@ def mainWindow(width, height):
     window.title("PSMS")
     window.geometry(width + "x" + height)
 
+   
 
     def closeWindow():
         window.destroy()
@@ -112,7 +118,13 @@ def mainWindow(width, height):
     submit = Button(text="Send", command=sendMsg)
     submit.pack()
 
-    keyboard.add_hotkey('enter', lambda: sendMsg())
+
+
+
+    
+    listener = keyboard.Listener(on_press=sendMsg)
+    listener.start()
+    #keyboard.add_hotkey('enter', lambda: sendMsg())
 
 
     window.config(menu = menubar)
@@ -183,7 +195,7 @@ def settingsWindow(width, height):
     newName = Button(settings, text="Enter New Name!", command= getEntry)
     newName.pack()
 
-    keyboard.add_hotkey('enter', lambda: getEntry())
+    #keyboard.add_hotkey('enter', lambda: getEntry())
 
 
 
