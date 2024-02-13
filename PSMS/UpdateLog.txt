@@ -22,3 +22,4 @@ v0.4
 
 v0.5
 -changed keyboard module from Keyboard to Pynput and fixed message send bug
+-made message list scrollable

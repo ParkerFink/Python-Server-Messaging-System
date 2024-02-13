@@ -1,3 +1,4 @@
+
 import platform
 import os
 
@@ -16,7 +17,8 @@ if system == "Windows":
     
 
 elif system == "Linux":
+    os.system('pip3 install customtkinter')
     os.system('pip3 install pynput')
-    os.system('python3 PSMS_Client.py')
+    os.system('start.sh')
     
 

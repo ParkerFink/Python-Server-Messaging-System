@@ -1,6 +1,7 @@
 import socket
 import json
 import threading
+import customtkinter
 
 from pynput import keyboard
 from tkinter import *
@@ -41,7 +42,7 @@ def recvMessage():
             print(messageList)
             
             for message in messageList:
-                tmp = Label(window, text=message)
+                tmp = Label(messages_scroll, text=message)
                 tmp.pack()
 
 
@@ -90,6 +91,8 @@ def mainWindow(width, height):
 
     #MAIN WINDOW LOOP
     global window
+    global messages_scroll
+
     window = Tk()
     window.title("PSMS")
     window.geometry(width + "x" + height)
@@ -100,7 +103,8 @@ def mainWindow(width, height):
         window.destroy()
         exit()
 
-    #menuebar
+
+    #menu bar
     menubar = Menu(window)
     file = Menu(menubar, tearoff=0)
     menubar.add_cascade(label="General", menu=file)
@@ -109,24 +113,25 @@ def mainWindow(width, height):
     file.add_command(label="Exit", command= lambda: closeWindow())
 
 
+    #message box and send button
+    messages_scroll = customtkinter.CTkScrollableFrame(window, width=600, height= 400, border_width=3, border_color='black')
+    messages_scroll.pack()
 
-    entry = Entry(width=50)
+    entry = Entry(width=75)
     entry.pack()
-
-
 
     submit = Button(text="Send", command=sendMsg)
     submit.pack()
 
 
-
-
     
+
+    #send message hotkey
     listener = keyboard.Listener(on_press=sendMsg)
     listener.start()
-    #keyboard.add_hotkey('enter', lambda: sendMsg())
 
 
+    #menu bar
     window.config(menu = menubar)
     window.mainloop()
 
