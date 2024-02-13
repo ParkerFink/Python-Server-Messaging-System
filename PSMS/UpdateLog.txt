@@ -23,3 +23,5 @@ v0.4
 v0.5
 -changed keyboard module from Keyboard to Pynput and fixed message send bug
 -made message list scrollable
+-made the screen look a little nicer by rounding off some of the boxes
+-sends a notification to desktop when a message is recieved

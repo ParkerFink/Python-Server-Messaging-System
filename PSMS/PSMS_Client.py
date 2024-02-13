@@ -3,13 +3,19 @@ import json
 import threading
 import customtkinter
 
+
 from pynput import keyboard
 from tkinter import *
+from plyer import notification
 
 with open('config.json', 'r') as inFile:
     global data
     data = json.load(inFile)
     print(data)
+
+
+
+messageList = []
 
 
 #config 
@@ -23,7 +29,8 @@ print(socket.recv(1024).decode())
 
 
 
-messageList = []
+
+
 
 
 
@@ -32,6 +39,9 @@ messageList = []
 def recvMessage():
     while True:
         msgPayload_in = socket.recv(1024).decode()
+
+        notification.notify(title = "PSMS", message = msgPayload_in, timeout = 2)
+
         if msgPayload_in == False:
             pass
 
@@ -58,28 +68,29 @@ recvThread.start()
 #MAIN WINDOW FUNCTION
 def mainWindow(width, height):
 
-    
-
-    def sendMsg(key):
-
+    def whatKey(key):
         if key == keyboard.Key.enter:
+            sendMsg()
+        
+        
 
-            with open('config.json', 'r') as configFile:
-                username = json.load(configFile)
-                configFile.close()
+    def sendMsg():
+
+        with open('config.json', 'r') as configFile:
+            username = json.load(configFile)
+            configFile.close()
 
 
-            msgPayload = str(entry.get())
+        msgPayload = str(entry.get())
 
-            if msgPayload == "":
-                pass
+        if msgPayload == "":
+            pass
 
-            else:
-                print("Sent: " + msgPayload)
-                msg = username["username"] + ": " + msgPayload
-                socket.send(msg.encode())
-                entry.delete(0, 10000)
-
+        else:
+            print("Sent: " + msgPayload)
+            msg = username["username"] + ": " + msgPayload
+            socket.send(msg.encode())
+            entry.delete(0, 10000)
 
         with open('config.json', 'r') as configFile:
             data = json.load(configFile)
@@ -100,7 +111,6 @@ def mainWindow(width, height):
    
 
     def closeWindow():
-        window.destroy()
         exit()
 
 
@@ -110,24 +120,24 @@ def mainWindow(width, height):
     menubar.add_cascade(label="General", menu=file)
 
     file.add_command(label="Preferences", command= lambda: settingsWindow("800","500"))
-    file.add_command(label="Exit", command= lambda: closeWindow())
+    file.add_command(label="Exit", command= exit)
 
 
     #message box and send button
     messages_scroll = customtkinter.CTkScrollableFrame(window, width=600, height= 400, border_width=3, border_color='black')
     messages_scroll.pack()
 
-    entry = Entry(width=75)
+    entry = customtkinter.CTkEntry(window, width=600,placeholder_text="Message", corner_radius=80)
     entry.pack()
 
-    submit = Button(text="Send", command=sendMsg)
+    submit = customtkinter.CTkButton(window, text="Send", command=sendMsg, corner_radius=80)
     submit.pack()
 
 
     
 
     #send message hotkey
-    listener = keyboard.Listener(on_press=sendMsg)
+    listener = keyboard.Listener(on_press=whatKey)
     listener.start()
 
 
@@ -148,12 +158,13 @@ def settingsWindow(width, height):
     def closeWindow():
         settings.destroy()
 
-    
+  
+            
 
 
     global settings
     settings = Tk()
-    settings.title("Settings")
+    settings.title("Preferences")
     settings.geometry(width + "x" + height)
 
 
@@ -174,9 +185,9 @@ def settingsWindow(width, height):
 
         with open('config.json', 'w') as configFile:
             json.dump(data, configFile)
+            l1.config(text="User Name: " + data["username"])
             configFile.close()
-
-        l2.config(text=entryGet)
+        
         entry.delete(0, 10000)
 
 
@@ -186,21 +197,19 @@ def settingsWindow(width, height):
         configFile.close()
 
 
-    l1 = Label(settings, text="User Name: ")
+    l1 = Label(settings, text="User Name: " + data["username"])
     l1.pack()
 
-    l2 = Label(settings, text= data["username"])
-    l2.pack()
+    
 
     entry = Entry(settings)
     entry.pack()
 
-
-
     newName = Button(settings, text="Enter New Name!", command= getEntry)
     newName.pack()
 
-    #keyboard.add_hotkey('enter', lambda: getEntry())
+    lightMode = Button(settings, text="Toggle Lightmode- Work In Progress")
+    lightMode.pack()
 
 
 

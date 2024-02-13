@@ -1,4 +1,3 @@
-
 import platform
 import os
 
@@ -12,13 +11,16 @@ print(system)
 
 #actions based on current os
 if system == "Windows":
-    os.system('pip install keyboard')
+    os.system('pip3 install customtkinter')
+    os.system('pip3 install pynput')
+    os.system('pip3 install plyer')
     os.system('python PSMS_Client.py')
     
 
 elif system == "Linux":
     os.system('pip3 install customtkinter')
     os.system('pip3 install pynput')
-    os.system('start.sh')
+    os.system('pip3 install plyer')
+    os.system('python3 PSMS_Client.py')
     
 

@@ -33,7 +33,11 @@ def onNewClient(client_socket, addr):
             break
         for user in connections:
             user.send(data.encode())
-        print("Server: ", data)
+            #joinedMsg = addr + " has joined: "
+            #user.send(joinedMsg.encode())
+          
+
+        print(data)
         
 
 
