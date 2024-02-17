@@ -11,6 +11,8 @@ with open('config.json', 'r') as inFile:
     print(data)
     inFile.close()
 
+
+
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket Created: ")
 

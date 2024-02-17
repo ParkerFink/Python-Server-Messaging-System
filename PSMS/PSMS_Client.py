@@ -19,12 +19,18 @@ messageList = []
 
 
 #config 
+def connect():
+    global socket
+    global connection
 
-socket = socket.socket()
-port = data["port"]
-ip = data["ip"]
-socket.connect((ip, port))
-print(socket.recv(1024).decode())
+    socket = socket.socket()
+    port = data["port"]
+    ip = data["ip"]
+    connection = socket.connect((ip, port))
+    print(socket.recv(1024).decode())
+
+    recvThread = threading.Thread(target=recvMessage, name="recvThread")
+    recvThread.start()
 
 
 
@@ -58,16 +64,13 @@ def recvMessage():
 
 
 
-recvThread = threading.Thread(target=recvMessage, name="recvThread")
-recvThread.start()
-
 
 
 
 #GUI
 #MAIN WINDOW FUNCTION
 def mainWindow(width, height):
-
+    
     def whatKey(key):
         if key == keyboard.Key.enter:
             sendMsg()
@@ -110,10 +113,6 @@ def mainWindow(width, height):
 
    
 
-    def closeWindow():
-        exit()
-
-
     #menu bar
     menubar = Menu(window)
     file = Menu(menubar, tearoff=0)
@@ -133,13 +132,15 @@ def mainWindow(width, height):
     submit = customtkinter.CTkButton(window, text="Send", command=sendMsg, corner_radius=80)
     submit.pack()
 
-
+    connectButton = Button(window, text="Connect To Server", command=connect)
+    connectButton.pack()
     
 
     #send message hotkey
     listener = keyboard.Listener(on_press=whatKey)
     listener.start()
 
+ 
 
     #menu bar
     window.config(menu = menubar)
@@ -190,7 +191,8 @@ def settingsWindow(width, height):
         
         entry.delete(0, 10000)
 
-
+    def updateIP():
+        pass
 
     with open('config.json', 'r') as configFile:
         data = json.load(configFile)
@@ -205,14 +207,36 @@ def settingsWindow(width, height):
     entry = Entry(settings)
     entry.pack()
 
+
+
     newName = Button(settings, text="Enter New Name!", command= getEntry)
     newName.pack()
 
-    lightMode = Button(settings, text="Toggle Lightmode- Work In Progress")
-    lightMode.pack()
 
 
+    #lightMode = Button(settings, text="Toggle Lightmode- Work In Progress")
+    #lightMode.pack()
 
+
+    with open('config.json', 'r') as inFile:
+        data = json.load(inFile)
+
+    
+
+    connectInfo_IP = Label(settings, text= data["ip"])
+    connectInfo_IP.pack()
+
+    connectInfo_Port = Label(settings, text=data["port"])
+    connectInfo_Port
+
+    #ipLabel = Label(settings, text=data["ip"])
+    #ipLabel.pack()
+
+    #portLabel = Label(settings, text=data["port"])
+    #portLabel.pack()
+
+    connectButton = Button(settings, text="Connect To Server", command=connect)
+    connectButton.pack()
 
     settings.mainloop()
 

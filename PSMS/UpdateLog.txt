@@ -19,9 +19,12 @@ v0.4
 -added a menu bar with a General button
 -added a single setup/start file for both linux and windows
 
-
 v0.5
 -changed keyboard module from Keyboard to Pynput and fixed message send bug
 -made message list scrollable
 -made the screen look a little nicer by rounding off some of the boxes
 -sends a notification to desktop when a message is recieved
+
+v0.6
+-Client can now run separate from the server- meaning you no longer have to connect to server to open client
+-Added a connect to server button in the settings and main window
