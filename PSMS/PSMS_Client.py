@@ -12,6 +12,7 @@ with open('config.json', 'r') as inFile:
     global data
     data = json.load(inFile)
     print(data)
+    inFile.close()
 
 
 
@@ -20,6 +21,10 @@ messageList = []
 
 #config 
 def connect():
+    with open('config.json', 'r') as inFile:
+        data = json.load(inFile)
+
+    inFile.close()
     global socket
     global connection
 
@@ -159,30 +164,63 @@ def mainWindow(width, height):
 
 
 
+#CONNECTION INFO UPDATE BOX
+def CIUP(width, height):
+    ciub = Tk()
+    ciub.geometry(width + "x" + height)
+    ciub.title("Update Connection Info")
+    
+    def updateInfo():
+        newIP = connection_ip.get()
+        
 
+        newPORT = connection_port.get()
+        newPORT = int(newPORT)
+
+
+        with open('config.json', 'r') as inFile:
+            file = json.load(inFile)
+            file["ip"] = newIP
+            file["port"] = newPORT
+            
+            newInfo = str(file["ip"]) + ":" + str(file["port"])
+
+            with open('config.json', 'w') as inFile:
+                json.dump(file, inFile)
+
+                connectInfo.config(text=newInfo)
+                inFile.close()
+                ciub.destroy()
+
+            
+
+
+    connection_ip = customtkinter.CTkEntry(ciub, placeholder_text="IP Address")
+    connection_ip.pack()
+
+    connection_port = customtkinter.CTkEntry(ciub, placeholder_text="Port")
+    connection_port.pack()
+
+    submit = customtkinter.CTkButton(ciub, text="Update", command= updateInfo)
+    submit.pack()
+
+
+    ciub.mainloop()
 
 
 
 #SETTINGS WINDOW
 def settingsWindow(width, height):
-
-    
-    def closeWindow():
-        settings.destroy()
-
-  
-            
-
-
     global settings
+    global connectInfo
+
     settings = Tk()
     settings.title("Preferences")
     settings.geometry(width + "x" + height)
 
 
 
-    backButton = Button(settings, text="Go Back", command=closeWindow)
-    backButton.pack()
+    
 
 
     def getEntry():
@@ -202,8 +240,6 @@ def settingsWindow(width, height):
         
         entry.delete(0, 10000)
 
-    def updateIP():
-        pass
 
     with open('config.json', 'r') as configFile:
         data = json.load(configFile)
@@ -233,18 +269,13 @@ def settingsWindow(width, height):
         data = json.load(inFile)
 
     
+    connectionData = str(data["ip"]) + ":" + str(data["port"])
 
-    connectInfo_IP = Label(settings, text= data["ip"])
-    connectInfo_IP.pack()
 
-    connectInfo_Port = Label(settings, text=data["port"])
-    connectInfo_Port
 
-    #ipLabel = Label(settings, text=data["ip"])
-    #ipLabel.pack()
+    connectInfo = Button(settings, text= connectionData, padx=10, pady=10, command= lambda: CIUP("200","200"))
+    connectInfo.pack()
 
-    #portLabel = Label(settings, text=data["port"])
-    #portLabel.pack()
 
     connectButton = Button(settings, text="Connect To Server", command=connect)
     connectButton.pack()
