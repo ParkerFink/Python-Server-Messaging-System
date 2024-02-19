@@ -28,3 +28,6 @@ v0.5
 v0.6
 -Client can now run separate from the server- meaning you no longer have to connect to server to open client
 -Added a connect to server button in the settings and main window
+-Added a connected/not connected icon
+-Removed the send button- relying on ENTER for sending messages only now
+-Changed the look of home GUI

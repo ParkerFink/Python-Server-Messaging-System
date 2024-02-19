@@ -29,6 +29,8 @@ def connect():
     connection = socket.connect((ip, port))
     print(socket.recv(1024).decode())
 
+    connection_status.config(text="Connected")
+
     recvThread = threading.Thread(target=recvMessage, name="recvThread")
     recvThread.start()
 
@@ -45,7 +47,6 @@ def connect():
 def recvMessage():
     while True:
         msgPayload_in = socket.recv(1024).decode()
-
         notification.notify(title = "PSMS", message = msgPayload_in, timeout = 2)
 
         if msgPayload_in == False:
@@ -58,7 +59,7 @@ def recvMessage():
             print(messageList)
             
             for message in messageList:
-                tmp = Label(messages_scroll, text=message)
+                tmp = Label(messages_scroll, text=message, anchor='w')
                 tmp.pack()
 
 
@@ -74,6 +75,7 @@ def mainWindow(width, height):
     def whatKey(key):
         if key == keyboard.Key.enter:
             sendMsg()
+        
         
         
 
@@ -106,12 +108,11 @@ def mainWindow(width, height):
     #MAIN WINDOW LOOP
     global window
     global messages_scroll
+    global connection_status
 
     window = Tk()
     window.title("PSMS")
     window.geometry(width + "x" + height)
-
-   
 
     #menu bar
     menubar = Menu(window)
@@ -122,19 +123,29 @@ def mainWindow(width, height):
     file.add_command(label="Exit", command= exit)
 
 
+
+    groupChatsLabel = Label(window, text="Group Chats", border=3, relief='solid', width=10, justify='center')
+    groupChatsLabel.grid(column=1, row=1)
+
+    connection_status = Label(text="Disconnected", pady=5, width=15)
+    connection_status.grid(column=2, row=1)
+
+
     #message box and send button
-    messages_scroll = customtkinter.CTkScrollableFrame(window, width=600, height= 400, border_width=3, border_color='black')
-    messages_scroll.pack()
+    messages_scroll = customtkinter.CTkScrollableFrame(window, width=600, height= 400, border_width=3, border_color='black', corner_radius=15)
+    messages_scroll.grid(column=3, row=2)
+
 
     entry = customtkinter.CTkEntry(window, width=600,placeholder_text="Message", corner_radius=80)
-    entry.pack()
+    entry.grid(column=3, row=3)
 
-    submit = customtkinter.CTkButton(window, text="Send", command=sendMsg, corner_radius=80)
-    submit.pack()
 
-    connectButton = Button(window, text="Connect To Server", command=connect)
-    connectButton.pack()
-    
+    dms_label = Label(text="DMs", border=3, relief='solid', width=15, justify='center', pady=5)
+    dms_label.grid(column=4, row=1)
+
+
+    connectButton = customtkinter.CTkButton(window, width=140, text="Connect", command=connect)
+    connectButton.grid(column=4, row=3)
 
     #send message hotkey
     listener = keyboard.Listener(on_press=whatKey)
@@ -245,7 +256,7 @@ def settingsWindow(width, height):
 
 
 
-mainWindow("800", "500")
+mainWindow("1000", "500")
 
 
 
