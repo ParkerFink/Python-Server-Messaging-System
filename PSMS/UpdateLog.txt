@@ -31,3 +31,4 @@ v0.6
 -Added a connected/not connected icon
 -Removed the send button- relying on ENTER for sending messages only now
 -Changed the look of home GUI
+-Auto installs required modules and if they are already installed- runs program
