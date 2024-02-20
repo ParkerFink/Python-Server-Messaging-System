@@ -32,3 +32,7 @@ v0.6
 -Removed the send button- relying on ENTER for sending messages only now
 -Changed the look of home GUI
 -Auto installs required modules and if they are already installed- runs program
+
+v0.7
+-client recieves message when a user connects
+-

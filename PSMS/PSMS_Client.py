@@ -36,6 +36,10 @@ def connect():
 
     connection_status.config(text="Connected")
 
+    connectMSG = str(data["username"]) + ": Has Connected! "
+
+    socket.send(connectMSG.encode())
+
     recvThread = threading.Thread(target=recvMessage, name="recvThread")
     recvThread.start()
 
