@@ -8,6 +8,8 @@ from pynput import keyboard
 from tkinter import *
 from plyer import notification
 
+
+
 with open('config.json', 'r') as inFile:
     global data
     data = json.load(inFile)
@@ -45,7 +47,27 @@ def connect():
 
 
 
+def sendMsg(entryName):
 
+        with open('config.json', 'r') as configFile:
+            username = json.load(configFile)
+            configFile.close()
+
+
+        msgPayload = str(entryName.get())
+
+        if msgPayload == "":
+            pass
+
+        else:
+            print("Sent: " + msgPayload)
+            msg = username["username"] + ": " + msgPayload
+            socket.send(msg.encode())
+            entryName.delete(0, 10000)
+
+        with open('config.json', 'r') as configFile:
+            data = json.load(configFile)
+            configFile.close()
 
 
 
@@ -83,37 +105,11 @@ def mainWindow(width, height):
     
     def whatKey(key):
         if key == keyboard.Key.enter:
-            sendMsg()
+            sendMsg(entry)
         
         
+
         
-
-    def sendMsg():
-
-        with open('config.json', 'r') as configFile:
-            username = json.load(configFile)
-            configFile.close()
-
-
-        msgPayload = str(entry.get())
-
-        if msgPayload == "":
-            pass
-
-        else:
-            print("Sent: " + msgPayload)
-            msg = username["username"] + ": " + msgPayload
-            socket.send(msg.encode())
-            entry.delete(0, 10000)
-
-        with open('config.json', 'r') as configFile:
-            data = json.load(configFile)
-            configFile.close()
-
-
-
-
-
     #MAIN WINDOW LOOP
     global window
     global messages_scroll

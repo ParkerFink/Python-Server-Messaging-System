@@ -35,4 +35,4 @@ v0.6
 
 v0.7
 -client recieves message when a user connects
--
+-made the sendMSG function a little more accessible for other code
