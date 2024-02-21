@@ -109,14 +109,14 @@ def mainWindow(width, height):
         
         
 
-        
+
     #MAIN WINDOW LOOP
     global window
     global messages_scroll
     global connection_status
 
     window = Tk()
-    window.title("PSMS")
+    window.title("PSMS " + str(data["version"]))
     window.geometry(width + "x" + height)
 
     #menu bar
