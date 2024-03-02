@@ -39,4 +39,4 @@ v0.7
 
 v0.8
 -updated modules to be installed from list
--
+-now using Pyshortcuts to create a desktop icon

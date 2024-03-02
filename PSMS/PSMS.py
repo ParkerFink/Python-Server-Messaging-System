@@ -5,9 +5,10 @@ import json
 
 #checks what the current os is
 system = platform.system()
+cwd = os.getcwd()
 print(system)
 
-modules = ['customtkinter', 'pynput', 'plyer']
+modules = ['customtkinter', 'pynput', 'plyer', 'pyshortcuts']
 
 
 #actions based on current os
@@ -18,6 +19,8 @@ if system == "Windows":
         if data['setup'] == False:
             for module in modules:
                 os.system('pip install ' + module)
+                import pyshortcuts
+                pyshortcuts.make_shortcut(cwd + '/PSMS.py', name="PSMS")
             data["setup"] = True
             
             with open('config.json', 'w') as inFile:
@@ -40,6 +43,9 @@ elif system == "Linux":
 
             for module in modules:
                 os.system('pip3 install ' + module)
+                import pyshortcuts
+                pyshortcuts.make_shortcut(cwd + '/PSMS.py', name="PSMS")
+
             data["setup"] = True
 
             with open('config.json', 'w') as inFile:
