@@ -7,7 +7,7 @@ import json
 system = platform.system()
 print(system)
 
-
+modules = ['customtkinter', 'pynput', 'plyer']
 
 
 #actions based on current os
@@ -16,12 +16,10 @@ if system == "Windows":
         data = json.load(inFile)
 
         if data['setup'] == False:
-            os.system('pip install customtkinter')
-            os.system('pip install pynput')
-            os.system('pip install plyer')
-
+            for module in modules:
+                os.system('pip install ' + module)
             data["setup"] = True
-
+            
             with open('config.json', 'w') as inFile:
                 json.dump(data, inFile)
 
@@ -39,10 +37,9 @@ elif system == "Linux":
         data = json.load(inFile)
 
         if data['setup'] == False:
-            os.system('pip3 install customtkinter')
-            os.system('pip3 install pynput')
-            os.system('pip3 install plyer')
 
+            for module in modules:
+                os.system('pip3 install ' + module)
             data["setup"] = True
 
             with open('config.json', 'w') as inFile:
