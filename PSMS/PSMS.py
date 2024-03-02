@@ -20,7 +20,7 @@ if system == "Windows":
             for module in modules:
                 os.system('pip install ' + module)
                 import pyshortcuts
-                pyshortcuts.make_shortcut(cwd + '/PSMS.py', name="PSMS")
+                pyshortcuts.make_shortcut(cwd + '/PSMS.py', name="PSMS", icon='ico.ico')
             data["setup"] = True
             
             with open('config.json', 'w') as inFile:
